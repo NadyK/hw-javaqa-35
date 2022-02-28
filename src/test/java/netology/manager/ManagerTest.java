@@ -13,25 +13,24 @@ class ManagerTest {
 
     private final ProductRepository repository = new ProductRepository();
     private final Manager manager = new Manager(repository);
+    Product first = new Smartphone(1, "iPhone-5", 100, "USA");
+    Product second = new Book(2, "Стихи", 1000, "Пушкин");
+    Product third = new Smartphone(3, "iPhone-6", 200, "USA");
+    Product fourth = new Book(4, "Android", 300, "China");
 
     @Test
     void shouldAdd() {
-        Product first = new Smartphone(1, "iPhone-5", 100, "USA");
-        Product second = new Book(2, "Стихи", 1000, "Пушкин");
+
         manager.add(first);
         manager.add(second);
 
         Product[] expected = new Product[]{first, second};
-        assertArrayEquals(repository.findAll(), expected);
+        assertArrayEquals( expected, repository.findAll());
 
     }
 
     @Test
     void shouldSearchByOneProduct() {
-        Product first = new Smartphone(1, "iPhone-5", 100, "USA");
-        Product second = new Book(2, "Стихи", 1000, "Пушкин");
-        Product third = new Smartphone(3, "iPhone-6", 200, "USA");
-        Product fourth = new Book(4, "Android", 300, "China");
 
         manager.add(first);
         manager.add(second);
@@ -39,17 +38,12 @@ class ManagerTest {
         manager.add(fourth);
 
         Product[] expected = new Product[]{second};
-        assertArrayEquals(manager.searchBy("Пушкин"), expected);
+        assertArrayEquals(expected, manager.searchBy("Пушкин"));
 
     }
 
     @Test
     void shouldSearchByTwoProduct() {
-
-        Product first = new Smartphone(1, "iPhone-5", 100, "USA");
-        Product second = new Book(2, "Стихи", 1000, "Пушкин");
-        Product third = new Smartphone(3, "iPhone-6", 200, "USA");
-        Product fourth = new Book(4, "Android", 300, "China");
 
         manager.add(first);
         manager.add(second);
@@ -57,17 +51,12 @@ class ManagerTest {
         manager.add(fourth);
 
         Product[] expected = new Product[]{first, third};
-        assertArrayEquals(manager.searchBy("USA"), expected);
+        assertArrayEquals(expected, manager.searchBy("USA"));
 
     }
 
     @Test
     void shouldSearchByProductNothing() {
-
-        Product first = new Smartphone(1, "iPhone-5", 100, "USA");
-        Product second = new Book(2, "Стихи", 1000, "Пушкин");
-        Product third = new Smartphone(3, "iPhone-6", 200, "USA");
-        Product fourth = new Book(4, "Android", 300, "China");
 
         manager.add(first);
         manager.add(second);
@@ -75,16 +64,11 @@ class ManagerTest {
         manager.add(fourth);
 
         Product[] expected = new Product[]{};
-        assertArrayEquals(manager.searchBy("Тургенев"), expected);
+        assertArrayEquals(expected, manager.searchBy("Тургенев"));
     }
 
     @Test
     void shouldSearchByProductName() {
-
-        Product first = new Smartphone(1, "iPhone-5", 100, "USA");
-        Product second = new Book(2, "Стихи", 1000, "Пушкин");
-        Product third = new Smartphone(3, "iPhone-6", 200, "USA");
-        Product fourth = new Book(4, "Android", 300, "China");
 
         manager.add(first);
         manager.add(second);
@@ -92,16 +76,11 @@ class ManagerTest {
         manager.add(fourth);
 
         Product[] expected = new Product[]{fourth};
-        assertArrayEquals(manager.searchBy("Android"), expected);
+        assertArrayEquals(expected, manager.searchBy("Android"));
     }
 
     @Test
     void shouldSearchByProductNamePart() {
-
-        Product first = new Smartphone(1, "iPhone-5", 100, "USA");
-        Product second = new Book(2, "Стихи", 1000, "Пушкин");
-        Product third = new Smartphone(3, "iPhone-6", 200, "USA");
-        Product fourth = new Book(4, "Android", 300, "China");
 
         manager.add(first);
         manager.add(second);
@@ -109,17 +88,23 @@ class ManagerTest {
         manager.add(fourth);
 
         Product[] expected = new Product[]{first, third};
-        assertArrayEquals(manager.searchBy("iPhone"), expected);
+        assertArrayEquals(expected, manager.searchBy("iPhone"));
     }
 
-
     @Test
-    void shouldMatches() {
-        Product first = new Smartphone(1, "iPhone-5", 100, "USA");
-
+    void shouldMatches1() {
         assertTrue(manager.matches(first, "iPhone"));
+    }
+    @Test
+    void shouldMatches2() {
         assertTrue(manager.matches(first, "iPho"));
+    }
+    @Test
+    void shouldMatches3() {
         assertTrue(manager.matches(first, "USA"));
+    }
+    @Test
+    void shouldMatches4() {
         assertFalse(manager.matches(first, "Пушкин"));
     }
 }
